@@ -38,13 +38,18 @@ app.get('/api/moderators', async (req, res) => {
                 .filter(r => r.name.startsWith('Доверие lvl '))
                 .map(r => {
                     const lvl = parseInt(r.name.replace('Доверие lvl ', '')) || 0;
-                    return { name: r.name, lvl: lvl, position: r.position };
+                    // 🎨 Забираем точный HEX-цвет роли из настроек Discord сервера!
+                    // Если у роли нет цвета, ставим дефолтный синий Дискорда (#5865F2)
+                    const color = r.hexColor === '#000000' ? '#5865F2' : r.hexColor;
+                    return { name: r.name, lvl: lvl, position: r.position, color: color };
                 });
 
             if (trustRoles.length > 0) {
-                // Сортируем роли, чтобы взять самую высшую по иерархии Discord
+                // Сортируем роли внутри одного юзера, чтобы взять самую высшую
                 trustRoles.sort((a, b) => b.position - a.position);
                 const highestTrustRole = trustRoles[0].name;
+                const highestLvl = trustRoles[0].lvl;
+                const currentRoleColor = trustRoles[0].color; // Цвет высшей роли модератора
 
                 const hasSupport = member.roles.cache.some(r => r.name === 'Поддержка');
                 const isTrusted = member.roles.cache.some(r => r.name === 'Доверенные');
@@ -54,6 +59,8 @@ app.get('/api/moderators', async (req, res) => {
                     displayName: member.displayName,
                     avatarURL: member.user.displayAvatarURL({ dynamic: true, size: 128 }),
                     trustStatus: highestTrustRole,
+                    trustLvl: highestLvl,
+                    roleColor: currentRoleColor, // Передаем точный цвет из ДС на сайт
                     canManageTickets: hasSupport ? 'Одобряет' : 'Нет доступа',
                     canAddPlayers: isTrusted ? 'Разрешено' : 'Запрещено',
                     ticketColor: hasSupport ? '#2ed573' : '#ff4757',
@@ -62,7 +69,19 @@ app.get('/api/moderators', async (req, res) => {
             }
         });
 
-        // Отправляем JSON список модераторов сайту
+        // Сортируем всех модераторов по уровню доверия от высшего к низшему
+        moderators.sort((a, b) => b.trustLvl - a.trustLvl);
+
+        res.json(moderators);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Ошибка получения данных из Discord' });
+    }
+});
+
+        // 📊 Сортировка по уровню доверия (от высшего к низшему)
+        moderators.sort((a, b) => b.trustLvl - a.trustLvl);
+
         res.json(moderators);
     } catch (error) {
         console.error(error);
