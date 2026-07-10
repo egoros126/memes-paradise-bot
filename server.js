@@ -6,7 +6,6 @@ const cors = require('cors');
 
 const app = express();
 
-// Полное и жесткое разрешение CORS для любых запросов (включая прокси Google Сайтов)
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'OPTIONS'],
@@ -26,7 +25,6 @@ client.once('ready', () => {
     console.log(`Бот успешно запущен как ${client.user.tag}`);
 });
 
-// Возвращаем выдачу JSON данных
 app.get('/api/moderators', async (req, res) => {
     try {
         const guild = await client.guilds.fetch(GUILD_ID);
@@ -38,18 +36,15 @@ app.get('/api/moderators', async (req, res) => {
                 .filter(r => r.name.startsWith('Доверие lvl '))
                 .map(r => {
                     const lvl = parseInt(r.name.replace('Доверие lvl ', '')) || 0;
-                    // 🎨 Забираем точный HEX-цвет роли из настроек Discord сервера!
-                    // Если у роли нет цвета, ставим дефолтный синий Дискорда (#5865F2)
                     const color = r.hexColor === '#000000' ? '#5865F2' : r.hexColor;
                     return { name: r.name, lvl: lvl, position: r.position, color: color };
                 });
 
             if (trustRoles.length > 0) {
-                // Сортируем роли внутри одного юзера, чтобы взять самую высшую
                 trustRoles.sort((a, b) => b.position - a.position);
                 const highestTrustRole = trustRoles[0].name;
                 const highestLvl = trustRoles[0].lvl;
-                const currentRoleColor = trustRoles[0].color; // Цвет высшей роли модератора
+                const currentRoleColor = trustRoles[0].color;
 
                 const hasSupport = member.roles.cache.some(r => r.name === 'Поддержка');
                 const isTrusted = member.roles.cache.some(r => r.name === 'Доверенные');
@@ -60,7 +55,7 @@ app.get('/api/moderators', async (req, res) => {
                     avatarURL: member.user.displayAvatarURL({ dynamic: true, size: 128 }),
                     trustStatus: highestTrustRole,
                     trustLvl: highestLvl,
-                    roleColor: currentRoleColor, // Передаем точный цвет из ДС на сайт
+                    roleColor: currentRoleColor,
                     canManageTickets: hasSupport ? 'Одобряет' : 'Нет доступа',
                     canAddPlayers: isTrusted ? 'Разрешено' : 'Запрещено',
                     ticketColor: hasSupport ? '#2ed573' : '#ff4757',
@@ -69,17 +64,6 @@ app.get('/api/moderators', async (req, res) => {
             }
         });
 
-        // Сортируем всех модераторов по уровню доверия от высшего к низшему
-        moderators.sort((a, b) => b.trustLvl - a.trustLvl);
-
-        res.json(moderators);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Ошибка получения данных из Discord' });
-    }
-});
-
-        // 📊 Сортировка по уровню доверия (от высшего к низшему)
         moderators.sort((a, b) => b.trustLvl - a.trustLvl);
 
         res.json(moderators);
