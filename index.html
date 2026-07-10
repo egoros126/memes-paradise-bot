@@ -282,7 +282,7 @@
     retryBlock.style.display = 'none';
 
     try {
-      const response = await fetch('https://railway.app');
+      const response = await fetch('https://memes-paradise-bot-production.up.railway.app/api/moderators');
       
       if (response.status === 500) {
         container.innerHTML = '<p style="color: #ff4757;">Ошибка сервера (500). Бот в сети, но в файле server.js есть баг с индексами ролей [0].</p>';
