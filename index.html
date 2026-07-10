@@ -278,15 +278,22 @@
 
       moderators.forEach(mod => {
         const card = document.createElement('div');
-        card.style = "background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 18px; border-radius: 14px; display: flex; flex-direction: row; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);";
+        
+        // Линия слева красится в точный цвет роли из Дискорда
+        card.style = `background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid ${mod.roleColor}; padding: 18px; border-radius: 14px; display: flex; flex-direction: row; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);`;
         
         card.innerHTML = `
-          <img src="${mod.avatarURL}" alt="Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid #5865F2; flex-shrink: 0;">
+          <!-- Ободок вокруг аватарки красится в цвет роли -->
+          <img src="${mod.avatarURL}" alt="Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid ${mod.roleColor}; flex-shrink: 0;">
+          
           <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;">
             <div style="font-weight: 800; font-size: 19px; color: #fff; line-height: 1.2;">@${mod.displayName}</div>
-            <div style="font-size: 14px; color: #a3e635; font-weight: 700; background: rgba(163,230,53,0.1); width: max-content; padding: 2px 8px; border-radius: 4px; margin: 2px 0;">
+            
+            <!-- Текст уровня доверия и полупрозрачная плашка под ним красятся в цвет роли -->
+            <div style="font-size: 14px; color: ${mod.roleColor}; font-weight: 700; background: ${mod.roleColor}15; width: max-content; padding: 2px 8px; border-radius: 4px; margin: 2px 0;">
               ${mod.trustStatus}
             </div>
+            
             <div style="display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: #94a3b8; margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 4px;">
               <div>🎫 Тикеты: <span style="color: ${mod.ticketColor}; font-weight: bold;">${mod.canManageTickets}</span></div>
               <div>👤 Добавление игроков: <span style="color: ${mod.addColor}; font-weight: bold;">${mod.canAddPlayers}</span></div>
