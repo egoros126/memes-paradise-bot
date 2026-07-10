@@ -2,20 +2,23 @@
 <div class="main-container" style="background: url('picture.jpg') no-repeat center center / cover fixed; min-height: 100vh; padding: 40px 0; display: flex; flex-direction: column; align-items: center; gap: 40px; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; width: 100%; margin: 0; overflow-x: hidden;">
 
   <!-- ================= КАРТОЧКА 1: ГЛАВНАЯ СТРАНИЦА ================= -->
-  <div style="background: rgba(20, 20, 20, 0.85); padding: 40px; border-radius: 20px; display: flex; flex-direction: row; align-items: flex-start; gap: 40px; color: white; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 95%; max-width: 1250px; box-sizing: border-box; min-height: 580px; margin: 0 auto;">
-    <!-- Левый блок: Виджет Discord -->
+  <!-- Высота карточки увеличена до min-height: 800px, добавлено align-items: center -->
+  <div style="background: rgba(20, 20, 20, 0.85); padding: 60px 50px; border-radius: 20px; display: flex; flex-direction: row; align-items: center; gap: 50px; color: white; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 95%; max-width: 1250px; box-sizing: border-box; min-height: 800px; margin: 0 auto;">
+    
+    <!-- Левый блок: Виджет Discord (высота увеличена до 650, чтобы заполнить пространство) -->
     <div style="flex-shrink: 0;">
-      <iframe src="https://discord.com/widget?id=1050833126223511582&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+      <iframe src="https://discord.com" width="350" height="650" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
     </div>
+    
     <!-- Правый блок: Текст главной страницы -->
-    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 24px; min-height: 500px; justify-content: center;">
-      <h1 style="margin: 0; font-size: 46px; font-weight: 800; line-height: 1.2; color: #a3e635; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 32px; min-height: 650px; justify-content: center;">
+      <h1 style="margin: 0; font-size: 54px; font-weight: 800; line-height: 1.2; color: #a3e635; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
         Официальный сайт<br>дискорд сервера<br>"Memes paradise"
       </h1>
-      <p style="margin: 0; color: #cbd5e1; font-size: 22px; line-height: 1.5;">
-        Заходи к нам общаться, будем ради всем!
+      <p style="margin: 0; color: #cbd5e1; font-size: 24px; line-height: 1.5;">
+        Заходи к нам общаться, будем рады всем!
       </p>
-      <a href="https://discord.gg/zAcTShmKbA" target="_blank" style="display: inline-block; width: max-content; background: #5865F2; color: white; text-decoration: none; padding: 16px 32px; font-size: 20px; font-weight: 700; border-radius: 8px; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); margin-top: 10px;">
+      <a href="https://discord.gg" target="_blank" style="display: inline-block; width: max-content; background: #5865F2; color: white; text-decoration: none; padding: 18px 36px; font-size: 22px; font-weight: 700; border-radius: 8px; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); margin-top: 10px;">
         Присоединиться к серверу
       </a>
     </div>
