@@ -20,19 +20,28 @@
   <div class="main-container" style="background: url('picture.jpg') no-repeat center center / cover fixed; min-height: 100vh; padding: 60px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; width: 100%; margin: 0; overflow-x: hidden; scroll-behavior: smooth;">
 
   <!-- Фиксированная кнопка «Листать к правилам» строго снизу по центру экрана -->
-  <a id="scroll-btn" href="#rules" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; background: rgba(20, 20, 20, 0.9); padding: 12px 24px; border-radius: 50px; font-size: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 999; transition: opacity 0.3s ease, visibility 0.3s ease;">
+  <a id="scroll-btn" href="#rules" onclick="scrollToRules(event)" style="position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); color: white; text-decoration: none; display: flex; align-items: center; gap: 14px; background: rgba(20, 20, 20, 0.92); padding: 18px 36px; border-radius: 50px; font-size: 18px; font-weight: 700; border: 2px solid rgba(255,255,255,0.25); box-shadow: 0 15px 35px rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 999; transition: opacity 0.3s ease, visibility 0.3s ease;">
     Листать к правилам 
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: bounce 2s infinite; color: #a3e635;">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="animation: bounce 2s infinite; color: #a3e635;">
       <line x1="12" y1="5" x2="12" y2="19"></line>
       <polyline points="19 12 12 19 5 12"></polyline>
     </svg>
   </a>
 
   <script>
-    // Логика исчезновения кнопки при скролле вниз
+    /* Железобетонный скрипт для плавного скролла к правилам */
+    function scrollToRules(event) {
+      event.preventDefault(); 
+      const target = document.getElementById('rules');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    /* Логика исчезновения кнопки при скролле вниз */
     window.addEventListener('scroll', function() {
       const btn = document.getElementById('scroll-btn');
-      if (window.scrollY > 150) { // Если прокрутили больше 150px вниз
+      if (window.scrollY > 150) { 
         btn.style.opacity = '0';
         btn.style.visibility = 'hidden';
       } else {
