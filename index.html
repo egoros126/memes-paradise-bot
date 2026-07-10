@@ -6,55 +6,68 @@
   <title>Discord Server — Memes Paradise</title>
   
   <style>
-    /* Анимация прыгающей стрелочки вниз */
+    /* Анимация прыгающей стрелочки */
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-10px); }
-      60% { transform: translateY(-5px); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
     }
   </style>
 </head>
 <body style="margin: 0; padding: 0;">
 
-  <!-- ГЛАВНЫЙ КОНТЕЙНЕР (Исправлен фон, добавлена плавная прокрутка и центрирование) -->
+  <!-- ГЛАВНЫЙ КОНТЕЙНЕР -->
   <div class="main-container" style="background: url('picture.jpg') no-repeat center center / cover fixed; min-height: 100vh; padding: 60px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; width: 100%; margin: 0; overflow-x: hidden; scroll-behavior: smooth;">
-  
-<!-- ================= КАРТОЧКА 1: ГЛАВНАЯ СТРАНИЦА ================= -->
-<!-- Высота увеличена до min-height: 900px -->
-<div style="background: rgba(20, 20, 20, 0.85); padding: 60px 50px; border-radius: 20px; display: flex; flex-direction: row; align-items: center; gap: 50px; color: white; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 95%; max-width: 1250px; box-sizing: border-box; min-height: 900px; margin: 0 auto; position: relative;">
-  
-  <!-- Левый блок: Виджет Discord (высота увеличена до 720) -->
-  <div style="flex-shrink: 0;">
-    <iframe src="https://discord.com" width="350" height="720" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-  </div>
-  
-  <!-- Правый блок: Текст главной страницы -->
-  <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 32px; min-height: 720px; justify-content: center; position: relative; padding-bottom: 80px; box-sizing: border-box;">
-    <h1 style="margin: 0; font-size: 54px; font-weight: 800; line-height: 1.2; color: #a3e635; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
-      Официальный сайт<br>дискорд сервера<br>"Memes paradise"
-    </h1>
-    <p style="margin: 0; color: #cbd5e1; font-size: 24px; line-height: 1.5;">
-      Заходи к нам общаться, будем рады всем!
-    </p>
-    
-    <!-- Блок кнопки и мелкого текста под ней -->
-    <div style="display: flex; flex-direction: column; gap: 10px;">
-      <a href="https://discord.gg" target="_blank" style="display: inline-block; width: max-content; background: #5865F2; color: white; text-decoration: none; padding: 18px 36px; font-size: 22px; font-weight: 700; border-radius: 8px; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);">
-        Присоединиться к серверу
-      </a>
-      <span style="color: #94a3b8; font-size: 14px; padding-left: 5px;">* Ссылка откроется в новом окне браузера или приложении Discord</span>
-    </div>
 
-    <!-- Анимированная кнопка перехода вниз (Стрелка) -->
-    <a href="#rules" style="position: absolute; bottom: 0; left: 0; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); padding: 10px 20px; border-radius: 50px; font-size: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.15); transition: background 0.3s;">
-      Листать к правилам 
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: bounce 2s infinite; color: #a3e635;">
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <polyline points="19 12 12 19 5 12"></polyline>
-      </svg>
-    </a>
+  <!-- Фиксированная кнопка «Листать к правилам» строго снизу по центру экрана -->
+  <a id="scroll-btn" href="#rules" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; background: rgba(20, 20, 20, 0.9); padding: 12px 24px; border-radius: 50px; font-size: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 999; transition: opacity 0.3s ease, visibility 0.3s ease;">
+    Листать к правилам 
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="animation: bounce 2s infinite; color: #a3e635;">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <polyline points="19 12 12 19 5 12"></polyline>
+    </svg>
+  </a>
+
+  <script>
+    // Логика исчезновения кнопки при скролле вниз
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('scroll-btn');
+      if (window.scrollY > 150) { // Если прокрутили больше 150px вниз
+        btn.style.opacity = '0';
+        btn.style.visibility = 'hidden';
+      } else {
+        btn.style.opacity = '1';
+        btn.style.visibility = 'visible';
+      }
+    });
+  </script>
+  
+  <!-- ================= КАРТОЧКА 1: ГЛАВНАЯ СТРАНИЦА ================= -->
+  <div style="background: rgba(20, 20, 20, 0.85); padding: 60px 50px; border-radius: 20px; display: flex; flex-direction: row; align-items: center; gap: 50px; color: white; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 95%; max-width: 1250px; box-sizing: border-box; min-height: 900px; margin: 0 auto; position: relative;">
+    
+    <!-- Левый блок: Виджет Discord -->
+    <div style="flex-shrink: 0;">
+      <iframe src="https://discord.com" width="350" height="720" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    </div>
+    
+    <!-- Правый блок: Текст главной страницы -->
+    <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 32px; min-height: 720px; justify-content: center; position: relative; box-sizing: border-box;">
+      <h1 style="margin: 0; font-size: 54px; font-weight: 800; line-height: 1.2; color: #a3e635; text-shadow: 2px 2px 6px rgba(0,0,0,0.4);">
+        Официальный сайт<br>дискорд сервера<br>"Memes paradise"
+      </h1>
+      <p style="margin: 0; color: #cbd5e1; font-size: 24px; line-height: 1.5;">
+        Заходи к нам общаться, будем рады всем!
+      </p>
+      
+      <!-- Блок кнопки и мелкого текста -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <a href="https://discord.gg" target="_blank" style="display: inline-block; width: max-content; background: #5865F2; color: white; text-decoration: none; padding: 18px 36px; font-size: 22px; font-weight: 700; border-radius: 8px; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);">
+          Присоединиться к серверу
+        </a>
+        <span style="color: #94a3b8; font-size: 14px; padding-left: 5px;">* Ссылка откроется в новом окне браузера или приложении Discord</span>
+      </div>
+    </div>
   </div>
-</div>
 
   <!-- ================= КАРТОЧКА 2: ДОПОЛНИТЕЛЬНАЯ ПЛАШКА С ТАБАМИ ================= -->
   <div style="width: 95%; max-width: 1250px; box-sizing: border-box; margin: 0 auto;">
