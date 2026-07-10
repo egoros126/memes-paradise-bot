@@ -26,7 +26,7 @@ app.get('/api/moderators', async (req, res) => {
 
         members.forEach(member => {
             const trustRoles = member.roles.cache
-                .filter(r => r.name.startsWith('Доверие lvl'))
+                .filter(r => r.name.startsWith('Доверие lvl '))
                 .map(r => {
                     const lvl = parseInt(r.name.replace('Доверие lvl ', '')) || 0;
                     return { name: r.name, lvl: lvl, position: r.position };
