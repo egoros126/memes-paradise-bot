@@ -21,19 +21,31 @@ const client = new Client({
 
 const GUILD_ID = '1050833126223511582';
 
+// НАШЕ МИНИ-ХРАНИЛИЩЕ (КЭШ) В ПАМЯТИ СЕРВЕРА
+let cachedModerators = []; 
+
+// 🌟 ПЕРЕМЕННЫЕ ДЛЯ КОНТРОЛЯ ОШИБОК
+let lastError = null;       // Сюда пишем текст ошибки, если она зависла
+let errorCount = 0;        // Считаем сколько раз подряд бот споткнулся
+
 client.once('ready', () => {
     console.log(`Бот успешно запущен как ${client.user.tag}`);
+    updateModeratorsCache();
+    // Бот проверяет обновления каждые 30 секунд (чтобы быстрее реагировать)
+    setInterval(updateModeratorsCache, 30 * 1000);
 });
 
-app.get('/api/moderators', async (req, res) => {
+async function updateModeratorsCache() {
     try {
         const guild = await client.guilds.fetch(GUILD_ID);
         const members = await guild.members.fetch();
-        const moderators = [];
+        const tempModerators = [];
 
         members.forEach(member => {
+            if (member.user.bot) return;
+
             const trustRoles = member.roles.cache
-                .filter(r => r.name.startsWith('Доверие lvl '))
+                .filter(r => r.name && r.name.startsWith('Доверие lvl '))
                 .map(r => {
                     const lvl = parseInt(r.name.replace('Доверие lvl ', '')) || 0;
                     const color = r.hexColor === '#000000' ? '#5865F2' : r.hexColor;
@@ -49,10 +61,15 @@ app.get('/api/moderators', async (req, res) => {
                 const hasSupport = member.roles.cache.some(r => r.name === 'Поддержка');
                 const isTrusted = member.roles.cache.some(r => r.name === 'Доверенные');
 
-                moderators.push({
+                let avatar = 'https://discord.com';
+                try {
+                    avatar = member.user.displayAvatarURL({ dynamic: true, size: 128 });
+                } catch (e) {}
+
+                tempModerators.push({
                     username: member.user.username,
-                    displayName: member.displayName,
-                    avatarURL: member.user.displayAvatarURL({ dynamic: true, size: 128 }),
+                    displayName: member.displayName || member.user.username,
+                    avatarURL: avatar,
                     trustStatus: highestTrustRole,
                     trustLvl: highestLvl,
                     roleColor: currentRoleColor,
@@ -64,13 +81,34 @@ app.get('/api/moderators', async (req, res) => {
             }
         });
 
-        moderators.sort((a, b) => b.trustLvl - a.trustLvl);
+        tempModerators.sort((a, b) => b.trustLvl - a.trustLvl);
 
-        res.json(moderators);
+        if (tempModerators.length > 0) {
+            cachedModerators = tempModerators;
+            // 🌟 ВСЁ КРУТО: сбрасываем ошибки в ноль
+            errorCount = 0;
+            lastError = null;
+            console.log('Кэш модераторов успешно обновлен!');
+        }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Ошибка получения данных из Discord' });
+        // 🌟 СБОЙ: прибавляем ошибку к счетчику
+        errorCount++;
+        console.error(`Сбой обновления кэша (Попытка ${errorCount}):`, error.message);
+
+        // Если бот споткнулся больше 3 раз подряд (это как раз около 1.5 - 2 минут непрерывной ошибки)
+        if (errorCount >= 3) {
+            lastError = `Дискорд API выдает сбой: ${error.message || 'Внутренняя ошибка сервера (500)'}. Используются старые сохраненные данные.`;
+        }
     }
+}
+
+// Эндпоинт для сайта
+app.get('/api/moderators', (req, res) => {
+    // 🌟 Если у нас накопились ошибки, мы дописываем предупреждение прямо в ответ сайту!
+    res.json({
+        moderators: cachedModerators,
+        warning: lastError // Если всё хорошо, тут будет null. Если сбой — сайт узнает правду.
+    });
 });
 
 client.login(process.env.DISCORD_TOKEN); 
