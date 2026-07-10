@@ -290,41 +290,52 @@
         return;
       }
 
-      const moderators = await response.json();
-      
-      if (moderators.length === 0) {
-        container.innerHTML = '<p style="color: #64748b;">Участники с ролями "Доверие lvl" не найдены на сервере.</p>';
-        return;
-      }
+      const data = await response.json();
+    const moderators = data.moderators || [];
 
-      container.innerHTML = '';
-
-      moderators.forEach(mod => {
-        const card = document.createElement('div');
-        card.style = `background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid ${mod.roleColor}; padding: 18px; border-radius: 14px; display: flex; flex-direction: row; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);`;
-        
-        card.innerHTML = `
-          <img src="${mod.avatarURL}" alt="Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid ${mod.roleColor}; flex-shrink: 0;">
-          <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;">
-            <div style="font-weight: 800; font-size: 19px; color: #fff; line-height: 1.2;">@${mod.displayName}</div>
-            <div style="font-size: 14px; color: ${mod.roleColor}; font-weight: 700; background: ${mod.roleColor}15; width: max-content; padding: 2px 8px; border-radius: 4px; margin: 2px 0;">
-              ${mod.trustStatus}
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: #94a3b8; margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 4px;">
-              <div>🎫 Тикеты: <span style="color: ${mod.ticketColor}; font-weight: bold;">${mod.canManageTickets}</span></div>
-              <div>👤 Добавление игроков: <span style="color: ${mod.addColor}; font-weight: bold;">${mod.canAddPlayers}</span></div>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    } catch (error) {
-      console.error(error);
-      container.innerHTML = '<p style="color: #ff4757;">Ошибка синхронизации. Скорее всего, сервер бота сейчас спит в облаке.</p>';
-      // Показываем кнопку ручной перезагрузки
-      retryBlock.style.display = 'flex';
+    if (moderators.length === 0) {
+      container.innerHTML = '<p style="color: #64748b;">Участники с ролями "Доверие lvl" не найдены на сервере.</p>';
+      return;
     }
-  }
 
-  document.addEventListener('DOMContentLoaded', loadModerators);
+    // 1. Сначала полностью очищаем контейнер
+    container.innerHTML = '';
+
+    // 2. Если бот передал предупреждение — вешаем жёлтую плашку в самый верх списка
+    if (data.warning) {
+      const warnText = document.createElement('p');
+      warnText.style = "color: #eccc68; background: rgba(236,203,104,0.1); padding: 10px 15px; border-radius: 6px; font-size: 14px; width: 100%; grid-column: 1 / -1; margin: 0 0 10px 0; border: 1px solid rgba(236,203,104,0.2);";
+      warnText.innerHTML = `⚠️ ${data.warning}`;
+      container.appendChild(warnText);
+    }
+
+    // 3. Рисуем карточки модераторов на свои места
+    moderators.forEach(mod => {
+      const card = document.createElement('div');
+      card.style = `background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid ${mod.roleColor}; padding: 18px; border-radius: 14px; display: flex; flex-direction: row; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);`;
+      
+      card.innerHTML = `
+        <img src="${mod.avatarURL}" alt="Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid ${mod.roleColor}; flex-shrink: 0;">
+        <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;">
+          <div style="font-weight: 800; font-size: 19px; color: #fff; line-height: 1.2;">@${mod.displayName}</div>
+          <div style="font-size: 14px; color: ${mod.roleColor}; font-weight: 700; background: ${mod.roleColor}15; width: max-content; padding: 2px 8px; border-radius: 4px; margin: 2px 0;">
+            ${mod.trustStatus}
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: #94a3b8; margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 4px;">
+            <div>🎫 Тикеты: <span style="color: ${mod.ticketColor}; font-weight: bold;">${mod.canManageTickets}</span></div>
+            <div>👤 Добавление игроков: <span style="color: ${mod.addColor}; font-weight: bold;">${mod.canAddPlayers}</span></div>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = '<p style="color: #ff4757;">Ошибка синхронизации. Проверьте статус бота.</p>';
+    retryBlock.style.display = 'flex';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadModerators);
 </script>
