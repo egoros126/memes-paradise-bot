@@ -104,6 +104,7 @@ async function updateModeratorsCache() {
 
 // Эндпоинт для сайта
 app.get('/api/moderators', (req, res) => {
+     console.log(`[ВЕБ] Получен запрос от сайта! Отдаю ${cachedModerators.length} модераторов.`);
     // 🌟 Если у нас накопились ошибки, мы дописываем предупреждение прямо в ответ сайту!
     res.json({
         moderators: cachedModerators,
