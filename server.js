@@ -114,4 +114,5 @@ app.get('/api/moderators', (req, res) => {
 
 client.login(process.env.DISCORD_TOKEN); 
 
-app.listen(process.env.PORT || 3000, () => console.log('API запущено'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => console.log(`API запущено на порту ${PORT}`));
