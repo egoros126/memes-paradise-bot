@@ -129,11 +129,20 @@ app.get('/', (req, res) => {
     res.send('Бэкэнд Discord-бота успешно работает и готов принимать API запросы!');
 });
 
-// ИСПРАВЛЕНО: Динамический порт для Railway
+// Динамический порт для Railway
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n==================================================`);
     console.log(`[СЕТЬ] Express API успешно запущено на порту ${PORT}`);
+    
+    // Определяем публичный адрес для логов
+    const domain = process.env.RAILWAY_PUBLIC_DOMAIN 
+        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` 
+        : `http://localhost:${PORT}`;
+        
+    console.log(`[СЕТЬ] Ссылка для сайта (Фронтенда): \x1b[36m${domain}/api/moderators\x1b[0m`);
+    console.log(`==================================================\n`);
     
     if (!process.env.DISCORD_TOKEN) {
         console.error("[КРИТИЧЕСКАЯ ОШИБКА] Переменная окружения DISCORD_TOKEN не найдена в Railway!");
