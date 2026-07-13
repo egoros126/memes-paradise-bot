@@ -16,7 +16,7 @@ app.use(cors({
 const client = new Client({ 
     intents: [
         GatewayIntentBits.Guilds, 
-        GatewayIntentBits.GuildMembers
+        GatewayIntentBits.GuildMembers // Требует включенного галочкой "Server Members Intent" в Discord Dev Portal
     ] 
 });
 
@@ -29,8 +29,8 @@ let cachedModerators = [];
 let lastError = null;       
 let errorCount = 0;        
 
-// Изменено на clientReady в соответствии с требованиями d.js v14+
-client.once('clientReady', () => {
+// ИСПРАВЛЕНО: Изменено с 'clientReady' на 'ready'
+client.once('ready', () => {
     console.log(`[ДИСКОРД] Бот успешно запущен как ${client.user.tag}`);
     updateModeratorsCache();
     // Проверка обновлений каждые 30 секунд
@@ -44,9 +44,10 @@ async function updateModeratorsCache() {
             throw new Error(`Не удалось найти сервер с ID ${GUILD_ID}. Проверьте, добавлен ли бот на сервер.`);
         }
 
-        const members = await guild.members.fetch().catch(() => null);
+        // Принудительно запрашиваем список всех пользователей с сервера
+        const members = await guild.members.fetch({ force: true }).catch(() => null);
         if (!members) {
-            throw new Error("Discord API временно отклонил запрос участников (Rate Limit)");
+            throw new Error("Discord API временно отклонил запрос участников (Rate Limit) или не включен GuildMembers Intent");
         }
 
         const tempModerators = [];
@@ -66,7 +67,6 @@ async function updateModeratorsCache() {
                 // Сортируем роли по позиции в списке, чтобы найти самую высокую
                 trustRoles.sort((a, b) => b.position - a.position);
                 
-                // ИСПРАВЛЕНО: Обращаемся строго к первому элементу [0] отсортированного массива
                 const highestTrustRole = trustRoles[0].name;
                 const highestLvl = trustRoles[0].lvl;
                 const currentRoleColor = trustRoles[0].color;
@@ -129,9 +129,8 @@ app.get('/', (req, res) => {
     res.send('Бэкэнд Discord-бота успешно работает и готов принимать API запросы!');
 });
 
-// БЕЗОПАСНЫЙ ЗАПУСК: Сначала открываем веб-порт для хостинга, а затем авторизуем Дискорд сессию
-// Заставляем Express слушать абсолютно новый, чистый порт 5000
-const PORT = 5000;
+// ИСПРАВЛЕНО: Динамический порт для Railway
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`[СЕТЬ] Express API успешно запущено на порту ${PORT}`);
