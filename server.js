@@ -132,7 +132,8 @@ app.get('/', (req, res) => {
 // Динамический порт для Railway
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, '0.0.0.0', () => {
+// Убираем '0.0.0.0', оставляя только PORT — теперь сервер будет доступен для прокси Railway
+app.listen(PORT, () => {
     console.log(`\n==================================================`);
     console.log(`[СЕТЬ] Express API успешно запущено на порту ${PORT}`);
     
