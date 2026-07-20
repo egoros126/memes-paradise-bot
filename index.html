@@ -330,46 +330,112 @@
 </style>
 
 <script>
-    async function loadModerators() {
+  /* Скрипт плавного скролла */
+  function scrollToRules(event) {
+    event.preventDefault(); 
+    const target = document.getElementById('rules');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  /* Исчезновение кнопки при скролле вниз */
+  window.addEventListener('scroll', function() {
+    const btn = document.getElementById('scroll-btn');
+    if (!btn) return;
+    if (window.scrollY > 150) { 
+      btn.style.opacity = '0';
+      btn.style.visibility = 'hidden';
+    } else {
+      btn.style.opacity = '1';
+      btn.style.visibility = 'visible';
+    }
+  });
+
+  // =========================================================================
+  // НАСТРОЙКА МОДЕРАТОРОВ (Редактируйте этот список при необходимости)
+  // =========================================================================
+  const FIXED_MODERATORS = [
+    {
+      displayName: "[ E G R ] // 01",
+      avatarURL: "https://discordapp.com",
+      roleColor: "#601414",       
+      trustStatus: "Основатель",  
+      canManageTickets: "Да",     
+      ticketColor: "#2ed573",     
+      canAddPlayers: "Да",        
+      addColor: "#2ed573"         
+    },
+    {
+      displayName: "джузо // 06",
+      avatarURL: "https://discordapp.com",
+      roleColor: "#ffffff",       
+      trustStatus: "Доверие lvl 1",  
+      canManageTickets: "Нет",    
+      ticketColor: "#ff4757",     
+      canAddPlayers: "Да",        
+      addColor: "#2ed573"         
+    },
+    {
+      displayName: "пицца 4 сина // 67",
+      avatarURL: "https://discordapp.com",
+      roleColor: "#e62222",       
+      trustStatus: "Доверие lvl 13",  
+      canManageTickets: "Да",     
+      ticketColor: "#2ed573",     
+      canAddPlayers: "Да",        
+      addColor: "#2ed573"         
+    },
+    {
+      displayName: "latzis // 03",
+      avatarURL: "https://discordapp.com",
+      roleColor: "#ff7373",       
+      trustStatus: "Доверие lvl 10",  
+      canManageTickets: "Да",     
+      ticketColor: "#2ed573",     
+      canAddPlayers: "Да",        
+      addColor: "#2ed573"         
+    },
+    {
+      displayName: "sorenko // 04",
+      avatarURL: "https://discordapp.com",
+      roleColor: "#ffffff",       
+      trustStatus: "Доверие lvl 1",  
+      canManageTickets: "Да",     
+      ticketColor: "#2ed573",     
+      canAddPlayers: "Да",        
+      addColor: "#2ed573"         
+    },
+    {
+      displayName: "Subaru // 05",
+      avatarURL: "https://discordapp.com",
+      roleColor: "#ffffff",       
+      trustStatus: "Доверие lvl 1",  
+      canManageTickets: "Да",     
+      ticketColor: "#2ed573",     
+      canAddPlayers: "Да",        
+      addColor: "#2ed573"         
+    }
+  ];
+
+  /* Локальный вывод списка модераторов */
+  function loadModerators() {
     const container = document.getElementById('staff-container');
     const retryBlock = document.getElementById('retry-block');
     
-    // Включаем режим загрузки и прячем кнопку, если она была открыта
-    container.innerHTML = '<p style="color: #cbd5e1;">Синхронизация с сервером Discord (пробуем разбудить бота)...</p>';
-    retryBlock.style.display = 'none';
+    if (!container) return;
+    if (retryBlock) retryBlock.style.display = 'none';
+    
+    container.innerHTML = '';
 
-    try {
-      const response = await fetch("https://api.allorigins.win/raw?url=https://memes-paradise-bot-production.up.railway.app/api/moderators");
-      
-      if (response.status === 500) {
-        container.innerHTML = '<p style="color: #ff4757;">Ошибка сервера (500). Бот в сети, но в файле server.js есть баг с индексами ролей [0].</p>';
-        retryBlock.style.display = 'flex';
-        return;
-      }
-
-      const data = await response.json();
-    const moderators = data.moderators || [];
-
-    if (moderators.length === 0) {
-      container.innerHTML = '<p style="color: #64748b;">Участники с ролями "Доверие lvl" не найдены на сервере.</p>';
+    if (FIXED_MODERATORS.length === 0) {
+      container.innerHTML = '<p style="color: #64748b;">Список модераторов пуст.</p>';
       return;
     }
 
-    // 1. Сначала полностью очищаем контейнер
-    container.innerHTML = '';
-
-    // 2. Если бот передал предупреждение — вешаем жёлтую плашку в самый верх списка
-    if (data.warning) {
-      const warnText = document.createElement('p');
-      warnText.style = "color: #eccc68; background: rgba(236,203,104,0.1); padding: 10px 15px; border-radius: 6px; font-size: 14px; width: 100%; grid-column: 1 / -1; margin: 0 0 10px 0; border: 1px solid rgba(236,203,104,0.2);";
-      warnText.innerHTML = `⚠️ ${data.warning}`;
-      container.appendChild(warnText);
-    }
-
-    // 3. Рисуем карточки модераторов на свои места
-    moderators.forEach(mod => {
+    FIXED_MODERATORS.forEach(mod => {
       const card = document.createElement('div');
-      card.style = `background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid ${mod.roleColor}; padding: 18px; border-radius: 14px; display: flex; flex-direction: row; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);`;
+      card.style.cssText = `background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-left: 5px solid ${mod.roleColor}; padding: 18px; border-radius: 14px; display: flex; flex-direction: row; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);`;
       
       card.innerHTML = `
         <img src="${mod.avatarURL}" alt="Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid ${mod.roleColor}; flex-shrink: 0;">
@@ -386,13 +452,7 @@
       `;
       container.appendChild(card);
     });
-
-  } catch (error) {
-    console.error(error);
-    container.innerHTML = '<p style="color: #ff4757;">Ошибка синхронизации. Проверьте статус бота.</p>';
-    retryBlock.style.display = 'flex';
   }
-}
 
-document.addEventListener('DOMContentLoaded', loadModerators);
+  document.addEventListener('DOMContentLoaded', loadModerators);
 </script>
