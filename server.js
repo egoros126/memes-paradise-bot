@@ -29,8 +29,7 @@ let cachedModerators = [];
 let lastError = null;       
 let errorCount = 0;        
 
-// ИСПРАВЛЕНО: Изменено с 'clientReady' на 'ready'
-client.once('ready', () => {
+client.once('clientReady', () => {
     console.log(`[ДИСКОРД] Бот успешно запущен как ${client.user.tag}`);
     updateModeratorsCache();
     // Проверка обновлений каждые 30 секунд
