@@ -54,9 +54,56 @@
   <!-- ================= КАРТОЧКА 1: ГЛАВНАЯ СТРАНИЦА ================= -->
   <div style="background: rgba(20, 20, 20, 0.85); padding: 60px 50px; border-radius: 20px; display: flex; flex-direction: row; align-items: center; gap: 50px; color: white; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 15px 40px rgba(0,0,0,0.6); width: 95%; max-width: 1250px; box-sizing: border-box; min-height: 1200px; margin: 0 auto; position: relative;">
     
-    <!-- Левый блок: Виджет Discord -->
-    <div style="flex-shrink: 0;">
-      <iframe src="https://discord.com/widget?id=1050833126223511582&theme=dark" width="350" height="700" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    <!-- Левый блок: Карточка-приглашение + Виджет Discord под ней -->
+    <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 15px; width: 350px; box-sizing: border-box;">
+      
+      <!-- СТИЛИ ДЛЯ КАРТОЧКИ (Вшиты инлайново для точечной замены) -->
+      <div style="background: #2b2d31; border-radius: 12px; width: 100%; overflow: hidden; font-family: 'GG Sans', 'Segoe UI', sans-serif; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); box-sizing: border-box;">
+        
+        <!-- Верхний баннер -->
+        <div style="height: 70px; background: linear-gradient(to right, #6b5c5c, #3d3434); position: relative;"></div>
+        
+        <!-- Основное тело карточки -->
+        <div style="padding: 14px; position: relative; padding-top: 42px; display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;">
+          
+          <!-- Аватарка сервера -->
+          <img src="https://weserv.nl" alt="Server Icon" style="width: 60px; height: 60px; border-radius: 16px; border: 5px solid #2b2d31; position: absolute; top: -30px; left: 14px; object-fit: cover;">
+          
+          <!-- Имя и галочка верификации -->
+          <h2 style="font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 5px; margin: 0;">
+            Memes paradise
+            <span style="color: #5865f2; display: inline-flex; align-items: center; width: 15px; height: 15px;">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M16 8.016c0-1.02-.505-1.92-1.275-2.47.165-.465.255-.96.255-1.48 0-2.22-1.805-4.025-4.02-4.025-.525 0-1.02.09-1.485.26C8.925.535 8.025 0 7.005 0 4.785 0 2.98 1.805 2.98 4.025c0 .525.09 1.015.255 1.485C2.47 6.06 1.96 6.96 1.96 7.98c0 1.02.51 1.92 1.275 2.47-.165.465-.255.965-.255 1.48 0 2.22 1.805 4.02 4.02 4.02.52 0 1.015-.09 1.48-.255.55.765 1.455 1.27 2.475 1.27 2.22 0 4.02-1.805 4.02-4.025 0-.52-.09-1.015-.255-1.48.77-.55 1.275-1.45 1.275-2.475zm-9.76 3.195L3.8 8.77l1.105-1.105 1.335 1.335 4.015-4.015 1.105 1.105-5.12 5.12z"/></svg>
+            </span>
+          </h2>
+          
+          <!-- Статистика участников -->
+          <div style="display: flex; gap: 12px; font-size: 13px; color: #b5bac1;">
+            <span style="display: flex; align-items: center;"><span style="display: inline-block; width: 6px; height: 6px; background: #23a55a; border-radius: 50%; margin-right: 5px;"></span>12 в сети</span>
+            <span style="display: flex; align-items: center;"><span style="display: inline-block; width: 6px; height: 6px; background: #b5bac1; border-radius: 50%; margin-right: 5px;"></span>27 участников</span>
+          </div>
+
+          <!-- Дата основания -->
+          <div style="font-size: 11px; color: #94a3b8; margin-top: -5px;">Дата основания: дек. 2022 г.</div>
+          
+          <!-- Описание сервера -->
+          <p style="font-size: 13px; color: #dbdee1; line-height: 1.4; margin: 0;">«Работа не волк, работа — это ворк, а волк — это ходить». Замечательный сервер, который заждался тебя.</p>
+          
+          <!-- Иконки игр -->
+          <div style="display: flex; gap: 6px; align-items: center; margin-top: 2px;">
+            <div style="width: 28px; height: 28px; background: #313338; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; border: 1px solid rgba(255,255,255,0.05);">🎮</div>
+            <div style="width: 28px; height: 28px; background: #313338; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; border: 1px solid rgba(255,255,255,0.05);">🎲</div>
+            <div style="width: 28px; height: 28px; background: #313338; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; border: 1px solid rgba(255,255,255,0.05);">👾</div>
+            <div style="width: 28px; height: 28px; background: #313338; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; border: 1px solid rgba(255,255,255,0.05);">🏆</div>
+            <div style="width: 28px; height: 28px; background: #313338; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 11px; font-weight: 700; border: 1px solid rgba(255,255,255,0.05);">+4</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Сам нативный виджет Discord (идёт сразу под карточкой) -->
+      <iframe src="https://discord.com/widget?id=1050833126223511582&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style="border-radius: 12px;"></iframe>
+
     </div>
     
     <!-- Правый блок: Текст главной страницы -->
