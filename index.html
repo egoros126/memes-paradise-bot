@@ -741,11 +741,19 @@
         });
       }
     } catch (e) {
-      if (onlineCounter) onlineCounter.innerText = "12 в сети";
-      if (totalCounter) totalCounter.innerText = "27 участников";
-      if (usersList) usersList.innerHTML = '<div style="font-size: 13px; color: #64748b;">Включите виджет в настройках Discord</div>';
+      // Выводим текст со знаком вопроса и фиксированным диапазоном
+      if (onlineCounter) onlineCounter.innerText = "? в сети";
+      if (totalCounter) totalCounter.innerText = "от 25 до 30 участников";
+      
+      // Выводим предупреждение о блокировке Discord в РФ
+      if (usersList) {
+        usersList.innerHTML = `
+          <div style="font-size: 13px; color: #ff4757; background: rgba(255,71,87,0.08); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,71,87,0.15); line-height: 1.4; margin-top: 5px;">
+            Не удалось подключиться к серверам Discord. Возможно проблема изза блокировки сервиса в РФ).
+          </div>
+        `;
+      }
     }
-  }
 
   // Запуск отслеживания при старте
   document.addEventListener('DOMContentLoaded', syncDiscordWidgetData);
