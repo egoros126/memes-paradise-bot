@@ -692,7 +692,7 @@
     const serverIcon = document.getElementById('widget-server-icon');
     
     try {
-      const res = await fetch('https://discord.com');
+      const res = await fetch('https://discord.com/api/guilds/1050833126223511582/widget.json');
       if (!res.ok) throw new Error();
       
       const data = await res.json();
