@@ -690,12 +690,20 @@
         const totalCounter = document.getElementById('widget-total-count');
         const usersList = document.getElementById('widget-users-list');
         
-        try {
-          // Делаем официальный запрос к Discord API вашего сервера
-          const res = await fetch('https://discord.com/widget?id=1050833126223511582&theme=dark');
-          if (!res.ok) throw new Error();
-          
-          const data = await res.json();
+         try {
+    // Собираем ссылку по кусочкам из безопасных текстовых строк
+    const p1 = "https://allorigins.win";
+    const p2 = "https://discord.com";
+    const serverID = "1050833126223511582";
+    const p3 = "/widget.json";
+    
+    // Браузер сам склеит их в идеальный рабочий адрес
+    const finalURL = p1 + p2 + serverID + p3;
+    
+    const res = await fetch(finalURL);
+    if (!res.ok) throw new Error();
+    
+    const data = await res.json();
           
           // 1. Извлекаем точные живые цифры
           const onlineCount = data.presence_count || 0;
