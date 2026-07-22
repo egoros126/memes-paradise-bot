@@ -692,7 +692,7 @@
         
         try {
           // Делаем официальный запрос к Discord API вашего сервера
-          const res = await fetch('https://discord.com');
+          const res = await fetch('https://discord.com/widget?id=1050833126223511582&theme=dark');
           if (!res.ok) throw new Error();
           
           const data = await res.json();
