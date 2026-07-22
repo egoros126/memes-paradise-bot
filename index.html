@@ -691,7 +691,7 @@
         const usersList = document.getElementById('widget-users-list');
         
          try {
-    const res = await fetch('https://api.allorigins.win/raw?url=https://discord.com/api/guilds/1050833126223511582/widget.json');
+    const res = await fetch('https://discord.com/api/guilds/1050833126223511582/widget.json');
     if (!res.ok) throw new Error();
     
     const data = await res.json();
