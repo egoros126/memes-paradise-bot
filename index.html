@@ -708,7 +708,7 @@
           if (onlineCounter) onlineCounter.innerText = onlineCount + " в сети";
           if (totalCounter) totalCounter.innerText = totalCount + " участников";
           
-          if (usersList && data.members) {
+if (usersList && data.members) {
         usersList.innerHTML = '';
         
         // Фильтруем список: убираем ботов по тегу MMS и слову bot
@@ -731,15 +731,14 @@
           usersList.appendChild(userRow);
         });
       }
-          }
-        } catch (e) {
-          // Если у пользователя блокировщик рекламы или виджет отключен в ДС
-          if (onlineCounter) onlineCounter.innerText = "12 в сети";
-          if (totalCounter) totalCounter.innerText = "27 участников";
-          if (usersList) usersList.innerHTML = '<div style="font-size: 13px; color: #64748b;">Включите виджет в настройках Discord</div>';
-        }
-      }
-      
-      // Запускаем отслеживание при старте
-      document.addEventListener('DOMContentLoaded', syncDiscordWidgetData);
-    </script>
+    } catch (e) {
+      // Возвращаем на место закрывающую скобку блока try и сам блок catch
+      if (onlineCounter) onlineCounter.innerText = "12 в сети";
+      if (totalCounter) totalCounter.innerText = "27 участников";
+      if (usersList) usersList.innerHTML = '<div style="font-size: 13px; color: #64748b;">Включите виджет в настройках Discord</div>';
+    }
+  }
+
+  // Запуск отслеживания при старте
+  document.addEventListener('DOMContentLoaded', syncDiscordWidgetData);
+</script>
