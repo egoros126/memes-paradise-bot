@@ -691,16 +691,7 @@
         const usersList = document.getElementById('widget-users-list');
         
          try {
-    // Собираем ссылку по кусочкам из безопасных текстовых строк
-    const p1 = "https://allorigins.win";
-    const p2 = "https://discord.com";
-    const serverID = "1050833126223511582";
-    const p3 = "/widget.json";
-    
-    // Браузер сам склеит их в идеальный рабочий адрес
-    const finalURL = p1 + p2 + serverID + p3;
-    
-    const res = await fetch(finalURL);
+    const res = await fetch('https://api.allorigins.win/raw?url=https://discord.com/api/guilds/1050833126223511582/widget.json');
     if (!res.ok) throw new Error();
     
     const data = await res.json();
