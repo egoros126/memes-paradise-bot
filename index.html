@@ -698,16 +698,7 @@ async function syncDiscordWidgetData() {
         if (onlineCounter) onlineCounter.innerText = onlineCount + " в сети";
         if (totalCounter) totalCounter.innerText = totalCount + " участников";
 
-        // 2. Автоматически подтягиваем родную иконку сервера с прокси wsrv.nl
-        if (serverIcon && data.members && data.members.length > 0) {
-            // Берем аватарку первого пользователя для примера или подставьте прямую ссылку на иконку
-            const rawIconURL = data.members[0].avatar_url;
-            if (rawIconURL) {
-                // Очищаем протокол для корректного форматирования в wsrv.nl
-                const cleanURL = rawIconURL.replace(/^https?:\/\//, '');
-                serverIcon.src = `https://wsrv.nl{cleanURL}&w=64&h=64&fit=cover`;
-            }
-        }
+        // 2. Автоматически подтягиваем родную иконку сервера с прокси wsrv.nl (удалено)
 
         // 3. Выводим список живых людей прямо внутрь карточки (без ботов)
         if (usersList && data.members) {
