@@ -708,22 +708,29 @@
           if (onlineCounter) onlineCounter.innerText = onlineCount + " в сети";
           if (totalCounter) totalCounter.innerText = totalCount + " участников";
           
-          // 2. Выводим список живых людей прямо внутрь карточки
           if (usersList && data.members) {
-            usersList.innerHTML = '';
-            // Показываем первых 8 человек, чтобы не перегружать интерфейс
-            data.members.slice(0, 8).forEach(user => {
-              const userRow = document.createElement('div');
-              userRow.style.cssText = "display: flex; align-items: center; gap: 10px; padding: 4px 0;";
-              userRow.innerHTML = `
-                <div style="position: relative; width: 28px; height: 28px; flex-shrink: 0;">
-                  <img src="${user.avatar_url}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                  <div style="position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; background: #23a55a; border: 1.5px solid #2b2d31; border-radius: 50%;"></div>
-                </div>
-                <span style="font-size: 14px; color: #dbdee1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${user.username}</span>
-              `;
-              usersList.appendChild(userRow);
-            });
+        usersList.innerHTML = '';
+        
+        // Фильтруем список: убираем ботов по тегу MMS и слову bot
+        const realUsers = data.members.filter(user => {
+          const name = user.username.toLowerCase();
+          return !name.includes('mms |') && !name.includes('bot');
+        });
+        
+        // Выводим только настоящих людей
+        realUsers.slice(0, 8).forEach(user => {
+          const userRow = document.createElement('div');
+          userRow.style.cssText = "display: flex; align-items: center; gap: 10px; padding: 4px 0;";
+          userRow.innerHTML = `
+            <div style="position: relative; width: 28px; height: 28px; flex-shrink: 0;">
+              <img src="${user.avatar_url}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+              <div style="position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; background: #23a55a; border: 1.5px solid #2b2d31; border-radius: 50%;"></div>
+            </div>
+            <span style="font-size: 14px; color: #dbdee1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${user.username}</span>
+          `;
+          usersList.appendChild(userRow);
+        });
+      }
           }
         } catch (e) {
           // Если у пользователя блокировщик рекламы или виджет отключен в ДС
