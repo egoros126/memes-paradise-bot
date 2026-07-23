@@ -103,7 +103,7 @@
 
           <!-- Зеленая кнопка вступления в самом низу панели -->
           <div style="margin-top: auto; padding-top: 15px; flex-shrink: 0;">
-            <a href="https://discord.gg" target="_blank" style="display: flex; justify-content: center; align-items: center; width: 100%; background: #248046; color: #fff; text-decoration: none; padding: 14px; border-radius: 6px; font-weight: 600; font-size: 16px; transition: background 0.2s; box-sizing: border-box; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
+            <a href="https://discord.gg/C9DZCQ4K6W" target="_blank" style="display: flex; justify-content: center; align-items: center; width: 100%; background: #248046; color: #fff; text-decoration: none; padding: 14px; border-radius: 6px; font-weight: 600; font-size: 16px; transition: background 0.2s; box-sizing: border-box; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">
               Принять приглашение
             </a>
           </div>
@@ -122,7 +122,7 @@
       
       <!-- Блок кнопки присоединения -->
       <div style="display: flex; flex-direction: column; gap: 10px;">
-        <a href="https://discord.gg" target="_blank" style="display: inline-block; width: max-content; background: #5865F2; color: white; text-decoration: none; padding: 18px 36px; font-size: 22px; font-weight: 700; border-radius: 8px; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);">
+        <a href="https://discord.gg/C9DZCQ4K6W" target="_blank" style="display: inline-block; width: max-content; background: #5865F2; color: white; text-decoration: none; padding: 18px 36px; font-size: 22px; font-weight: 700; border-radius: 8px; box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);">
           Присоединиться к серверу
         </a>
         <span style="color: #94a3b8; font-size: 14px; padding-left: 5px;">* Ссылка откроется в новом окне браузера или приложении Discord</span>
@@ -818,7 +818,7 @@
     const usersList = document.getElementById('widget-users-list');
     
     try {
-      const res = await fetch('https://discord.com');
+      const res = await fetch('https://discord.com/api/guilds/1050833126223511582/widget.json');
       if (!res.ok) throw new Error();
       
       const data = await res.json();
