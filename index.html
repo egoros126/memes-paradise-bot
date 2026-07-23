@@ -705,15 +705,16 @@
       btn.style.opacity = '1';
       btn.style.visibility = 'visible';
     }
+  });
 
   // =========================================================================
-  // НАСТРОЙКА МОДЕРАТОРОВ (Редактируйте этот список при необходимости)
+  // НАСТРОЙКА МОДЕРАТОРОВ
   // =========================================================================
   const FIXED_MODERATORS = [
     {
       displayName: "[ E G R ] // 01",
-      avatarURL: "https://cdn.discordapp.com/avatars/914226548578594886/3ecd1c2d324959dde478bf2c0b2b2178.png?size=1024",
-      roleColor: "#b91c1c",       // Яркий бордово-красный цвет для Основателя
+      avatarURL: "Icons/ServerIcon.jpg", // Используем локального Патрика
+      roleColor: "#b91c1c",       
       trustStatus: "Основатель",  
       canManageTickets: "Да",     
       ticketColor: "#2ed573",     
@@ -721,8 +722,18 @@
       addColor: "#2ed573"         
     },
     {
+      displayName: "джузо // 06",
+      avatarURL: "ВСТАВЬ_СЮДА_ССЫЛКУ",
+      roleColor: "#ffffff",       
+      trustStatus: "Доверие lvl 1",  
+      canManageTickets: "Нет",    
+      ticketColor: "#ff4757",     
+      canAddPlayers: "Да",        
+      addColor: "#2ed573"         
+    },
+    {
       displayName: "пицца 4 сина // 67",
-      avatarURL: "https://cdn.discordapp.com/avatars/1149821318838112407/6da4456371a9f97f2e82142445a2d741.png?size=1024",
+      avatarURL: "ВСТАВЬ_СЮДА_ССЫЛКУ",
       roleColor: "#e62222",       
       trustStatus: "Доверие lvl 13",  
       canManageTickets: "Да",     
@@ -732,7 +743,7 @@
     },
     {
       displayName: "latzis // 03",
-      avatarURL: "https://cdn.discordapp.com/avatars/1512498492327858350/3207c15f2500b84a21bf56b4965e099c.png?size=1024",
+      avatarURL: "https://weserv.nl",
       roleColor: "#ff7373",       
       trustStatus: "Доверие lvl 10",  
       canManageTickets: "Да",     
@@ -742,7 +753,7 @@
     },
     {
       displayName: "sorenko // 04",
-      avatarURL: "https://cdn.discordapp.com/avatars/1143490232927408219/fa409b41bcb71633f4a3181a26858d9e.png?size=1024",
+      avatarURL: "ВСТАВЬ_СЮДА_ССЫЛКУ",
       roleColor: "#ffffff",       
       trustStatus: "Доверие lvl 1",  
       canManageTickets: "Да",     
@@ -752,21 +763,11 @@
     },
     {
       displayName: "Subaru // 05",
-      avatarURL: "https://cdn.discordapp.com/avatars/1485626711419785440/0eaba0805b8755b274e762385dbec372.png?size=1024",
+      avatarURL: "ВСТАВЬ_СЮДА_ССЫЛКУ",
       roleColor: "#ffffff",       
       trustStatus: "Доверие lvl 1",  
       canManageTickets: "Да",     
       ticketColor: "#2ed573",     
-      canAddPlayers: "Да",        
-      addColor: "#2ed573"         
-    },
-     {
-      displayName: "джузо // 06",
-      avatarURL: "https://cdn.discordapp.com/avatars/1473002370903314623/2fd73411ad9a0e1a949c442f16507231.png?size=1024",
-      roleColor: "#ffffff",       
-      trustStatus: "Доверие lvl 1",  
-      canManageTickets: "Нет",    
-      ticketColor: "#ff4757",     
       canAddPlayers: "Да",        
       addColor: "#2ed573"         
     }
@@ -808,67 +809,68 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', loadModerators);
-
-async function syncDiscordWidgetData() {
+  // =========================================================================
+  // АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ ДАННЫХ И СПИСКА ЛЮДЕЙ ИЗ DISCORD WIDGET API
+  // =========================================================================
+  async function syncDiscordWidgetData() {
     const onlineCounter = document.getElementById('widget-online-count');
     const totalCounter = document.getElementById('widget-total-count');
     const usersList = document.getElementById('widget-users-list');
-    const serverIcon = document.getElementById('widget-server-icon');
-
+    
     try {
-        const res = await fetch('https://discord.com/api/guilds/1050833126223511582/widget.json');
-        if (!res.ok) throw new Error();
-        const data = await res.json();
+      const res = await fetch('https://discord.com');
+      if (!res.ok) throw new Error();
+      
+      const data = await res.json();
+      
+      // 1. Подгружаем живые цифры
+      const onlineCount = data.presence_count || 0;
+      const totalCount = onlineCount > 27 ? onlineCount + 15 : 27; 
 
-        // 1. Подгружаем живые цифры
-        const onlineCount = data.presence_count || 0;
-        const totalCount = onlineCount > 27 ? onlineCount + 15 : 27;
-
-        if (onlineCounter) onlineCounter.innerText = onlineCount + " в сети";
-        if (totalCounter) totalCounter.innerText = totalCount + " участников";
-
-        // 2. Автоматически подтягиваем родную иконку сервера с прокси wsrv.nl (удалено)
-
-        // 3. Выводим список живых людей прямо внутрь карточки (без ботов)
-        if (usersList && data.members) {
-            usersList.innerHTML = '';
-            
-            // Фильтруем список: убираем ботов по тегу MMS и слову bot
-            const realUsers = data.members.filter(user => {
-                const name = user.username.toLowerCase();
-                return !name.includes('mms |') && !name.includes('bot');
-            });
-
-            // Выводим только настоящих людей
-            realUsers.slice(0, 8).forEach(user => {
-                const userRow = document.createElement('div');
-                userRow.style.cssText = "display: flex; align-items: center; gap: 10px; padding: 4px 0;";
-                userRow.innerHTML = `
-                    <div style="position: relative; width: 28px; height: 28px; flex-shrink: 0;">
-                        <img src="${user.avatar_url}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                        <div style="position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; background: #23a55a; border: 1.5px solid #2b2d31; border-radius: 50%;"></div>
-                    </div>
-                    <span style="font-size: 14px; color: #dbdee1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${user.username}</span>
-                `;
-                usersList.appendChild(userRow);
-            });
-        }
+      if (onlineCounter) onlineCounter.innerText = onlineCount + " в сети";
+      if (totalCounter) totalCounter.innerText = totalCount + " участников";
+      
+      // 3. Выводим список живых людей прямо внутрь карточки (без ботов)
+      if (usersList && data.members) {
+        usersList.innerHTML = '';
+        
+        // Отсекаем ботов по ключевым словам
+        const realUsers = data.members.filter(user => {
+          const name = user.username.toLowerCase();
+          return !name.includes('mms |') && !name.includes('bot');
+        });
+        
+        realUsers.slice(0, 8).forEach(user => {
+          const userRow = document.createElement('div');
+          userRow.style.cssText = "display: flex; align-items: center; gap: 10px; padding: 4px 0;";
+          userRow.innerHTML = `
+            <div style="position: relative; width: 28px; height: 28px; flex-shrink: 0;">
+              <img src="${user.avatar_url}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+              <div style="position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px; background: #23a55a; border: 1.5px solid #2b2d31; border-radius: 50%;"></div>
+            </div>
+            <span style="font-size: 14px; color: #dbdee1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${user.username}</span>
+          `;
+          usersList.appendChild(userRow);
+        });
+      }
     } catch (e) {
-        // Выводим текст со знаком вопроса и фиксированным диапазоном
-        if (onlineCounter) onlineCounter.innerText = "? в сети";
-        if (totalCounter) totalCounter.innerText = "от 25 до 30 участников";
-
-        // Выводим предупреждение о блокировке Discord в РФ
-        if (usersList) {
-            usersList.innerHTML = `
-                <div style="font-size: 13px; color: #ff4757; background: rgba(255,71,87,0.08); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,71,87,0.15); line-height: 1.4; margin-top: 5px;">
-                    Не удалось подключиться к серверам Discord. Возможно проблема из-за блокировки сервиса в РФ.
-                </div>
-            `;
-        }
+      // Текст заглушки при блокировке Discord в РФ без рандома
+      if (onlineCounter) onlineCounter.innerText = "? в сети";
+      if (totalCounter) totalCounter.innerText = "от 25 до 30 участников";
+      
+      if (usersList) {
+        usersList.innerHTML = `
+          <div style="font-size: 13px; color: #ff4757; background: rgba(255,71,87,0.08); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,71,87,0.15); line-height: 1.4; margin-top: 5px;">
+            ⚠️ Не удалось подключиться к серверам Discord. Проверьте соединение или включите VPN (в РФ сервисы Discord заблокированы).
+          </div>
+        `;
+      }
     }
-
-// Запуск отслеживания при старте (раскомментировано!)
-document.addEventListener('DOMContentLoaded', syncDiscordWidgetData);
+  }
+  
+  // Запускаем оба процесса при загрузке страницы
+  document.addEventListener('DOMContentLoaded', () => {
+    loadModerators();
+    syncDiscordWidgetData();
+  });
 </script>
