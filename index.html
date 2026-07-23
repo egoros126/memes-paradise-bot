@@ -606,30 +606,7 @@
     font-weight: 600;
     box-sizing: border-box;
   }
-</style>
-
-<script>
-  /* Скрипт плавного скролла */
-  function scrollToRules(event) {
-    event.preventDefault(); 
-    const target = document.getElementById('rules');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  /* Исчезновение кнопки при скролле вниз */
-  window.addEventListener('scroll', function() {
-    const btn = document.getElementById('scroll-btn');
-    if (!btn) return;
-    if (window.scrollY > 150) { 
-      btn.style.opacity = '0';
-      btn.style.visibility = 'hidden';
-    } else {
-      btn.style.opacity = '1';
-      btn.style.visibility = 'visible';
-    }
-     /* Стили для инструкции заполнения тикетов */
+       /* Стили для инструкции заполнения тикетов */
   .ticket-steps {
     display: flex;
     flex-wrap: wrap;
@@ -689,7 +666,29 @@
     gap: 10px;              /* Расстояние между цифрой и текстом заголовка */
     margin-bottom: 8px;     /* Отступ снизу до описания */
 }
-  });
+</style>
+
+<script>
+  /* Скрипт плавного скролла */
+  function scrollToRules(event) {
+    event.preventDefault(); 
+    const target = document.getElementById('rules');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  /* Исчезновение кнопки при скролле вниз */
+  window.addEventListener('scroll', function() {
+    const btn = document.getElementById('scroll-btn');
+    if (!btn) return;
+    if (window.scrollY > 150) { 
+      btn.style.opacity = '0';
+      btn.style.visibility = 'hidden';
+    } else {
+      btn.style.opacity = '1';
+      btn.style.visibility = 'visible';
+    }
 
   // =========================================================================
   // НАСТРОЙКА МОДЕРАТОРОВ (Редактируйте этот список при необходимости)
